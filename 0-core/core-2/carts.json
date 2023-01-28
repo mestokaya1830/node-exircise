@@ -1,0 +1,63 @@
+[
+  {
+    "items": [],
+    "id": "cafda8fb"
+  },
+  {
+    "items": [
+      {
+        "id": "62b582ba",
+        "quantity": 2
+      },
+      {
+        "id": "ac3d7258",
+        "quantity": 1
+      }
+    ],
+    "id": "fb1e6e85"
+  },
+  {
+    "items": [
+      {
+<<<<<<< HEAD
+        "id": "f6b1fbbc",
+        "quantity": 1
+      },
+      {
+        "id": "ac3d7258",
+        "quantity": 2
+      },
+      {
+        "id": "a8f3ec8c",
+        "quantity": 1
+      }
+    ],
+    "id": "5466d584"
+  },
+  {
+    "items": [
+=======
+        "id": "a8f3ec8c",
+        "quantity": 1
+      },
+      {
+        "id": "2c8745bb",
+        "quantity": 2
+      },
+      {
+        "id": "ac3d7258",
+        "quantity": 1
+      },
+>>>>>>> bce6d8ad98784a2e5ecb3895e00fe0baf2d9071f
+      {
+        "id": "e7fccbd5",
+        "quantity": 1
+      }
+    ],
+<<<<<<< HEAD
+    "id": "b22de93c"
+=======
+    "id": "9c3c3c9a"
+>>>>>>> bce6d8ad98784a2e5ecb3895e00fe0baf2d9071f
+  }
+]

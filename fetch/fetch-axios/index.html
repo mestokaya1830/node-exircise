@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #list {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      width: 300px;
+    }
+
+    .list {
+      display: flex;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      margin: 3px 0;
+      padding: 5px;
+    }
+
+    .list-id {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 24px;
+      background-color: cornflowerblue;
+      color: #fff;
+      border-radius: 2px;
+    }
+
+    .list-name {
+      display: flex;
+      align-items: center;
+      width: 140px;
+      padding-left: 5px;
+    }
+
+    button {
+      margin: 0 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Fetch Axios</h2>
+  <input type="text" name="name" id="new-lang" placeholder="add new">
+  <input type="button" name="" id="" onclick="addNewLang()" value="Add New">
+  <br><br>
+  <input type="text" name="" id="search" placeholder="search">
+  <ul id="list" style="list-style: none;"></ul>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const getLangs = async () => {
+      try {
+        const result = await axios.get('http://localhost:3000/langs')
+        addDom(result.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    getLangs()
+
+    const addNewLang = async () => {
+      try {
+        document.getElementById('list').innerHTML = ''
+        const name = document.getElementById('new-lang').value
+        const result = await axios.post('http://localhost:3000/addlang', { name: name })
+        addDom(result.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const updateApi = async (id) => {
+      try {
+        document.getElementById('list').innerHTML = ''
+        const name = document.getElementById('new-lang').value
+        const result = await axios.put('http://localhost:3000/updatelang', { id: id, name: name })
+        addDom(result.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const deleteApi = async (id) => {
+      try {
+        document.getElementById('list').innerHTML = ''
+        const result = await axios.post('http://localhost:3000/deletelang', { id: id })
+        addDom(result.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    let searchApi = async () => {
+      document.getElementById('list').innerHTML = ''
+      let searchValue = document.getElementById('search').value
+      if (searchValue !== '') {
+        let search = searchValue.split(' ').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
+        addDom(result.data.filter(item => item.name.match(search)))
+      } else {
+        addDom(result.data)
+      }
+    }
+
+    const addDom = (param) => {
+      for (const item of param) {
+        document.getElementById('list').innerHTML += `
+        <li class="list">
+          <span class="list-id">${item.id}</span>
+          <span class="list-name">${item.name}</span>
+          <button onclick="updateApi(${item.id})">Update</button>
+          <button onclick="deleteApi(${item.id})">Delete</button>
+        </li>`
+      }
+    }
+  </script>
+</body>
+
+</html>

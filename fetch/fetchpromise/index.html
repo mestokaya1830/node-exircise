@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #list{
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      width:300px;
+    }
+    .list{
+      display: flex;
+      border:1px solid #ccc;
+      border-radius:2px;
+      margin:3px 0;
+      padding:5px;
+    }
+    .list-id{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 24px;
+      background-color: cornflowerblue;
+      color: #fff;
+      border-radius: 2px;
+    }
+    .list-name{
+      display: flex;
+      align-items: center;
+      width: 140px;
+      padding-left: 5px;
+    }
+    button{
+      margin:0 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Node.JS Fetch Promise</h2>
+  <button onclick="addLangs()">Add Langs</button>
+  <input type="text" id="add-new" placeholder="add new lang...">
+  <br><br>
+  <input type="text" id="search" onkeyup="searchLangs()" placeholder="search...">
+  <hr>
+  <h2 id="title">Lang List</h2>
+  <ul id="list">
+    <!-- dynamic side -->
+  </ul>
+  <!-- script side -->
+  <script>
+    let queryResult;
+
+    let getLangs = () => {
+      document.getElementById('list').innerHTML = ''
+      fetch('http://localhost:3000/langs')
+      .then(data => data.json())
+      .then(result => {
+        queryResult = result //for search
+        addDom(result)
+      })
+    }
+    getLangs()
+
+    let addLangs = () => {
+      document.getElementById('list').innerHTML = ''
+      fetch('http://localhost:3000/addlang',{
+        method:'POST',
+        body:JSON.stringify({
+          name: document.getElementById('add-new').value
+        }),
+        headers:{"Content-type":"application/json; charset=UTF-8"}
+      })
+      .then(data => data.json())
+      .then(result => {
+        addDom(result)
+      })
+    }
+    
+    let updateLangs = (id) => {
+      document.getElementById('list').innerHTML = ''
+      fetch('http://localhost:3000/updatelang',{
+        method:'PUT',
+        body:JSON.stringify({
+          id:id,
+          name: document.getElementById('add-new').value
+        }),
+        headers:{"Content-type":"application/json; charset=UTF-8"}
+      })
+      .then(data => data.json())
+      .then(result => {
+        addDom(result)
+      })
+    }
+    
+    let deleteLangs = (id) => {
+      document.getElementById('list').innerHTML = ''
+      fetch('http://localhost:3000/deletelang',{
+        method:'DELETE',
+        body:JSON.stringify({
+          id:id
+        }),
+        headers:{"Content-type":"application/json; charset=UTF-8"}
+      })
+      .then(data => data.json())
+      .then(result => {
+        addDom(result)
+      })
+    }
+    
+    let searchLangs = () => {
+      let searchValue = document.getElementById('search').value
+      if(searchValue !== '') {
+        document.getElementById('list').innerHTML = ''
+        let search = searchValue.split(' ').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
+        let result = queryResult.filter(item => item.name.match(search))
+        addDom(result)
+      } else {
+        addDom(queryResult)
+      }
+    }
+
+    const addDom = (param) => {
+      param.forEach((item,index) => {
+        document.getElementById('list').innerHTML += `
+        <li class="list">
+          <span class="list-id">${item.id}</span>
+          <span class="list-name">${item.name}</span>
+          <button onclick="updateLangs(${item.id})">Update</button>
+          <button onclick="deleteLangs(${item.id})">Delete</button>
+        </li>`
+      })
+    }
+  
+  </script>
+</body>
+</html>
